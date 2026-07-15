@@ -127,7 +127,7 @@ VMware Workstation Pro was downloaded and installed on the physical Windows host
 
 The official Windows Server 2022 evaluation ISO was downloaded from the Microsoft Evaluation Center.
 
-![Windows Server 2022 ISO](screenshots/02-windows-server-2022-iso)
+![Windows Server 2022 ISO](screenshots/02-windows-server-2022-iso.png)
 
 ## Virtual machine creation
 
@@ -141,7 +141,7 @@ Windows Server 2022 was installed inside the virtual machine.
 
 After the first boot, **Server Manager** opened automatically and was used to configure the server roles.
 
-![Windows Server virtual machine](screenshots/03-windows-server-vm)
+![Windows Server virtual machine](screenshots/03-windows-server-vm.png)
 
 ---
 
@@ -159,7 +159,7 @@ Manage
 → Active Directory Domain Services
 ```
 
-![Active Directory role selection](screenshots/04-add-active-directory-role)
+![Active Directory role selection](screenshots/04-add-active-directory-role.png)
 
 ## Required features
 
@@ -173,7 +173,7 @@ These included tools such as:
 - Active Directory Users and Computers;
 - Remote Server Administration Tools.
 
-![Required Active Directory features](screenshots/05-add-required-ad-features)
+![Required Active Directory features](screenshots/05-add-required-ad-features.png)
 
 The DNS Server role was also enabled because Active Directory relies heavily on DNS to locate Domain Controllers and other domain services.
 
@@ -195,7 +195,7 @@ The root domain configured for the laboratory was:
 ines.local
 ```
 
-![New forest configuration](screenshots/06-new-forest-configuration)
+![New forest configuration](screenshots/06-new-forest-configuration.png)
 
 ## Why create a new forest?
 
@@ -215,7 +215,7 @@ During the Domain Controller configuration, the following components were enable
 
 The forest and domain functional levels were configured using the most recent option available in the deployment wizard.
 
-![Domain Controller options](screenshots/07-domain-controller-options)
+![Domain Controller options](screenshots/07-domain-controller-options.png)
 
 ## DNS
 
@@ -262,7 +262,7 @@ After logging back into the server, the **Active Directory Users and Computers**
 
 The newly created domain appeared in the console, confirming that Active Directory had been successfully deployed.
 
-![Active Directory Users and Computers](screenshots/08-active-directory-users-and-computers)
+![Active Directory Users and Computers](screenshots/08-active-directory-users-and-computers.png)
 
 At this point, the laboratory contained:
 
@@ -315,7 +315,7 @@ ines.local
     └── Servers
 ```
 
-![Organizational Unit structure](screenshots/09-organizational-units-structure)
+![Organizational Unit structure](screenshots/09-organizational-units-structure.png)
 
 This design simulates an organization operating across several geographical regions.
 
@@ -356,7 +356,7 @@ For example, a group could later be granted access to:
 - an administrative tool;
 - a specific application.
 
-![Users and groups](screenshots/10-users-and-groups)
+![Users and groups](screenshots/10-users-and-groups.png)
 
 ---
 
