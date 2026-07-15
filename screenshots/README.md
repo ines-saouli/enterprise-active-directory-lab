@@ -1,3 +1,3 @@
 # Screenshots
 
-Screenshots documenting the configuration of the Active Directory home lab.
+Screenshots documenting the deployment and configuration of the Active Directory home lab.
