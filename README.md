@@ -117,7 +117,7 @@ It also allows the laboratory to be expanded later with additional systems such 
 
 VMware Workstation Pro was downloaded and installed on the physical Windows host.
 
-![VMware Workstation Pro](screenshots/01-vmware-workstation-installation)
+![VMware Workstation Pro](screenshots/01-vmware-workstation-installation.png)
 
 ---
 
