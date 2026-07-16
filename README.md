@@ -439,6 +439,508 @@ The Active Directory environment will be expanded with:
 
 ---
 
+# 🔟 Group Policy Management
+
+## Overview
+
+After deploying Active Directory Domain Services and creating the initial Organizational Unit structure, I continued building the laboratory by configuring **Group Policy Objects**, also known as GPOs.
+
+Group Policy provides centralized management of Windows computers and user environments within an Active Directory domain.
+
+Instead of manually configuring every workstation, an administrator can define a policy once and apply it automatically to:
+
+- the entire domain;
+- one or more Organizational Units;
+- specific users;
+- specific computers;
+- selected security groups.
+
+This makes Group Policy an essential component of enterprise Windows administration and endpoint security.
+
+The **Group Policy Management Console** was installed with the Active Directory management tools and was used to manage the policies for the `ines.local` domain.
+
+![Group Policy Management Console](screenshots/11-group-policy-management-console.png)
+
+---
+
+## Understanding Group Policy Objects
+
+A Group Policy Object contains configuration settings that can be applied to domain users or domain computers.
+
+The main configuration categories are:
+
+| Configuration type | Scope |
+|---|---|
+| Computer Configuration | Applies to the computer, regardless of which user signs in |
+| User Configuration | Applies to the user account after authentication |
+
+### Computer Configuration
+
+Computer Configuration is used for settings related to the Windows device itself.
+
+Examples include:
+
+- security settings;
+- Windows services;
+- startup scripts;
+- firewall settings;
+- software deployment;
+- removable storage restrictions;
+- local computer policies.
+
+These settings remain associated with the computer and do not change depending on the user who logs in.
+
+### User Configuration
+
+User Configuration is used for settings associated with user accounts.
+
+Examples include:
+
+- desktop customization;
+- mapped network drives;
+- Control Panel restrictions;
+- login scripts;
+- Start menu configuration;
+- application settings.
+
+These settings follow the user when they sign in to a domain-joined computer covered by the policy.
+
+---
+
+## Policies and Preferences
+
+Both Computer Configuration and User Configuration contain two important categories:
+
+```text
+Policies
+Preferences
+```
+
+### Policies
+
+Policies are administrative rules enforced by the domain.
+
+They are generally used for security requirements and restrictions that users should not be able to modify.
+
+Examples include:
+
+- password requirements;
+- account lockout rules;
+- access restrictions;
+- security options;
+- removable storage restrictions.
+
+### Preferences
+
+Preferences are used to configure an initial environment without always preventing the user from changing it afterward.
+
+Examples include:
+
+- desktop shortcuts;
+- mapped network drives;
+- printers;
+- files and folders;
+- registry settings.
+
+This distinction helps administrators choose whether a setting should be strictly enforced or simply provided as a default configuration.
+
+---
+
+# 1️⃣1️⃣ Password Policy GPO
+
+## Purpose
+
+The first security configuration involved reviewing and modifying the domain password policy.
+
+A password policy improves account security by defining minimum requirements for passwords used by domain users.
+
+The policy was configured through:
+
+```text
+Computer Configuration
+└── Policies
+    └── Windows Settings
+        └── Security Settings
+            └── Account Policies
+                └── Password Policy
+```
+
+![Password Policy GPO](screenshots/12-password-policy-gpo.png)
+
+---
+
+## Password Complexity
+
+The **Password must meet complexity requirements** setting was enabled.
+
+![Password Complexity](screenshots/13-password-complexity.png)
+
+When complexity requirements are enabled, Windows requires passwords to respect several rules.
+
+Depending on the Windows configuration, passwords should not contain the complete account name and should include characters from several categories, such as:
+
+- uppercase letters;
+- lowercase letters;
+- numbers;
+- special characters.
+
+This reduces the likelihood that users choose passwords that are easy to guess.
+
+---
+
+## Maximum Password Age
+
+The maximum password age was also modified.
+
+![Maximum Password Age](screenshots/14-password-max-age.png)
+
+This setting defines how long a user may keep the same password before Windows requests a change.
+
+Password expiration can limit the duration during which a compromised password remains useful. However, it should be combined with:
+
+- sufficient password length;
+- password history;
+- account lockout protection;
+- multifactor authentication where possible;
+- monitoring of suspicious authentication attempts.
+
+---
+
+## Security Benefits
+
+The password policy contributes to:
+
+- stronger user authentication;
+- reduced use of weak passwords;
+- consistent requirements across the domain;
+- centralized identity security;
+- easier enforcement of organizational standards.
+
+---
+
+# 1️⃣2️⃣ Drive Mapping GPO
+
+## Purpose
+
+A Drive Mapping GPO was created to automatically provide users with access to a network location.
+
+Mapped drives are commonly used in enterprise environments to give employees access to:
+
+- shared departmental folders;
+- personal home directories;
+- common organizational resources;
+- project documentation;
+- internal file servers.
+
+Instead of asking every user to manually configure the drive, Group Policy can create it automatically when the user signs in.
+
+---
+
+## Configuration Path
+
+The mapped drive was configured through:
+
+```text
+User Configuration
+└── Preferences
+    └── Windows Settings
+        └── Drive Maps
+```
+
+A new mapped drive was then created and configured with:
+
+- a network location;
+- a drive letter;
+- a display name;
+- the required action.
+
+![Drive Mapping GPO](screenshots/15-drive-mapping-gpo.png)
+
+![Drive Map Configuration](screenshots/16-drive-map-configuration.png)
+
+The location followed the standard UNC format:
+
+```text
+\\SERVER\Share
+```
+
+A drive letter was assigned so that the network resource would appear directly in File Explorer.
+
+---
+
+## Result
+
+Once the policy was applied, the mapped drive appeared automatically for the targeted user.
+
+![Mapped Drive Result](screenshots/17-drive-map-result.png)
+
+This demonstrates how Group Policy Preferences can automate workstation configuration and provide users with consistent access to business resources.
+
+---
+
+## Administrative Benefits
+
+Drive mapping through Group Policy provides:
+
+- centralized configuration;
+- fewer manual support requests;
+- consistent access to shared resources;
+- easier updates when a server path changes;
+- different mappings for different departments or OUs.
+
+---
+
+# 1️⃣3️⃣ Desktop Wallpaper Policy
+
+## Purpose
+
+A Desktop Wallpaper GPO was configured to apply a standardized background to domain users.
+
+Organizations may use a common wallpaper to:
+
+- maintain visual consistency;
+- display the company identity;
+- communicate internal information;
+- identify managed corporate computers;
+- display security or compliance reminders.
+
+---
+
+## Configuration Path
+
+The wallpaper policy was configured through:
+
+```text
+User Configuration
+└── Policies
+    └── Administrative Templates
+        └── Desktop
+            └── Desktop
+                └── Desktop Wallpaper
+```
+
+The policy was enabled and configured with the location of the wallpaper file.
+
+![Desktop Wallpaper Policy](screenshots/18-desktop-wallpaper-policy.png)
+
+Once applied, targeted users receive the configured wallpaper when they sign in.
+
+---
+
+## Security Considerations
+
+The wallpaper file should be stored in a location accessible to the targeted users.
+
+In an enterprise environment, this could be:
+
+- a shared network folder;
+- the SYSVOL directory;
+- a managed local path;
+- a distributed file server.
+
+Access permissions should prevent unauthorized modification of the file.
+
+---
+
+# 1️⃣4️⃣ Restricting Control Panel Access
+
+## Purpose
+
+A GPO was created to prevent users from accessing the Windows Control Panel and Settings application.
+
+This restriction helps reduce the risk of users modifying important workstation settings.
+
+Without appropriate restrictions, users could potentially change:
+
+- network configurations;
+- installed applications;
+- system preferences;
+- device settings;
+- security settings;
+- user environment options.
+
+---
+
+## Configuration Path
+
+The restriction was configured through:
+
+```text
+User Configuration
+└── Policies
+    └── Administrative Templates
+        └── Control Panel
+            └── Prohibit access to Control Panel and PC settings
+```
+
+The policy was enabled.
+
+![Control Panel Restriction](screenshots/19-control-panel-restriction.png)
+
+---
+
+## Security Benefits
+
+Restricting access to the Control Panel can:
+
+- reduce unauthorized changes;
+- prevent accidental misconfiguration;
+- improve workstation consistency;
+- lower the number of support incidents;
+- protect security-sensitive settings.
+
+This type of policy is particularly useful for:
+
+- shared computers;
+- student environments;
+- public workstations;
+- standard employee accounts;
+- locked-down enterprise endpoints.
+
+Administrative users should still retain access through properly separated privileged accounts.
+
+---
+
+# 1️⃣5️⃣ Disabling USB Storage
+
+## Purpose
+
+A Computer Configuration GPO was created to block access to removable storage devices.
+
+USB storage devices can introduce several security risks, including:
+
+- malware infection;
+- unauthorized data transfer;
+- data exfiltration;
+- use of unapproved software;
+- loss or theft of sensitive files.
+
+The policy was therefore configured at computer level so that it would apply to the workstation regardless of the connected user.
+
+---
+
+## Configuration Path
+
+The restriction was configured through:
+
+```text
+Computer Configuration
+└── Policies
+    └── Administrative Templates
+        └── System
+            └── Removable Storage Access
+                └── All Removable Storage classes: Deny all access
+```
+
+![Disable USB Storage](screenshots/20-disable-usb-storage.png)
+
+The **All Removable Storage classes: Deny all access** setting was enabled.
+
+---
+
+## Security Benefits
+
+Disabling removable storage can help:
+
+- prevent unauthorized copying of files;
+- reduce the risk of removable-media malware;
+- enforce data-loss prevention requirements;
+- protect sensitive organizational information;
+- limit the use of unmanaged devices.
+
+In a production environment, exceptions could be created for approved users or managed devices when business needs require removable media.
+
+---
+
+# 🔗 Group Policy Deployment Logic
+
+The policies created in this phase demonstrate both user-level and computer-level administration.
+
+```mermaid
+flowchart TD
+    A[Active Directory Domain] --> B[Group Policy Management]
+
+    B --> C[Computer Configuration]
+    B --> D[User Configuration]
+
+    C --> E[Password Policy]
+    C --> F[Disable USB Storage]
+
+    D --> G[Drive Mapping]
+    D --> H[Desktop Wallpaper]
+    D --> I[Restrict Control Panel]
+
+    E --> J[Domain Computers and Accounts]
+    F --> K[Managed Workstations]
+
+    G --> L[Domain Users]
+    H --> L
+    I --> L
+```
+
+---
+
+# 🧪 Policy Application and Testing
+
+After creating or modifying a Group Policy, Windows clients normally refresh their policies automatically.
+
+For testing purposes, the following command can be used on a domain-joined client:
+
+```powershell
+gpupdate /force
+```
+
+This command forces Windows to retrieve and apply the latest computer and user policies.
+
+The following command can be used to view the policies applied to the current computer and user:
+
+```powershell
+gpresult /r
+```
+
+A more detailed HTML report can also be generated:
+
+```powershell
+gpresult /h C:\gp-report.html
+```
+
+> These validation commands will be tested once a Windows client has been joined to the domain.
+
+---
+
+# ✅ Group Policy Deployment Summary
+
+During this phase of the Active Directory home lab, I:
+
+- opened and explored the Group Policy Management Console;
+- reviewed the difference between Computer Configuration and User Configuration;
+- studied the difference between Policies and Preferences;
+- configured password complexity requirements;
+- modified the maximum password age;
+- created a mapped network drive using Group Policy Preferences;
+- configured a standardized desktop wallpaper;
+- restricted access to the Control Panel and Windows Settings;
+- disabled access to removable USB storage;
+- documented the security purpose of each policy.
+
+---
+
+# 📚 Additional Skills Developed
+
+- Group Policy Management Console
+- Group Policy Objects
+- Computer Configuration
+- User Configuration
+- Administrative Templates
+- Group Policy Preferences
+- Password Policy Management
+- Drive Mapping
+- Desktop Environment Management
+- Endpoint Hardening
+- Removable Storage Control
+- Windows Security Administration
+- Centralized Policy Enforcement
+
 # ⚠️ Disclaimer
 
 This project was completed in a personal, isolated and controlled laboratory for educational purposes.
